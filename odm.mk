@@ -3,17 +3,19 @@ COMMON_ODM_SUBPATH := $(COMMON_ODM_PATH)/odm
 
 ifeq ($(PRODUCT_PREBUILT_ODM),true)
 
+TARGET_BOARD_PLATFORM_ODM := msm8996
+
 ODM_FILES := $(foreach p,$(shell find $(COMMON_ODM_SUBPATH) -type f),$(subst $(COMMON_ODM_SUBPATH)/,,$(p)))
 
 ODM_ADRENO_LIB_EGL_FILES := $(foreach p,$(shell find $(COMMON_ODM_SUBPATH)/lib/egl/ -type f),$(subst $(COMMON_ODM_SUBPATH)/lib/,,$(p)))
 ODM_ADRENO_LIB64_EGL_FILES := $(foreach p,$(shell find $(COMMON_ODM_SUBPATH)/lib64/egl/ -type f),$(subst $(COMMON_ODM_SUBPATH)/lib64/,,$(p)))
 # HW is only vulkan.platform.so
-#hw/vulkan.$(TARGET_BOARD_PLATFORM).so
+#hw/vulkan.$(TARGET_BOARD_PLATFORM_ODM).so
 #ODM_ADRENO_LIB_HW_FILES := $(foreach p,$(shell find $(COMMON_ODM_SUBPATH)/lib/hw/ -type f),$(subst $(COMMON_ODM_SUBPATH)/lib/,,$(p)))
 #ODM_ADRENO_LIB64_HW_FILES := $(foreach p,$(shell find $(COMMON_ODM_SUBPATH)/lib64/hw/ -type f),$(subst $(COMMON_ODM_SUBPATH)/lib64/,,$(p)))
 
 ODM_ADRENO_HW_VULKAN_LIBS := \
-    hw/vulkan.$(TARGET_BOARD_PLATFORM).so
+    hw/vulkan.$(TARGET_BOARD_PLATFORM_ODM).so
 
 ODM_ADRENO_SINGLE_LIBS := \
     libC2D2.so \
@@ -27,6 +29,12 @@ ODM_ADRENO_SINGLE_LIBS := \
     libllvm-qcom.so \
     librs_adreno.so \
     librs_adreno_sha1.so \
+
+# Don't duplicate files
+ODM_FILES := $(filter-out $(foreach p,$(ODM_ADRENO_LIB_EGL_FILES),lib/$(p)),$(ODM_FILES))
+ODM_FILES := $(filter-out $(foreach p,$(ODM_ADRENO_LIB64_EGL_FILES),lib64/$(p)),$(ODM_FILES))
+ODM_FILES := $(filter-out $(foreach p,lib lib64,$(p)/$(ODM_ADRENO_HW_VULKAN_LIBS)),$(ODM_FILES))
+ODM_FILES := $(filter-out $(foreach lib_dir,lib lib64,$(foreach p,$(ODM_ADRENO_SINGLE_LIBS),$(lib_dir)/$(p))),$(ODM_FILES))
 
 PRODUCT_COPY_FILES += \
     $(foreach p,$(ODM_FILES),$(COMMON_ODM_SUBPATH)/$(p):$(TARGET_COPY_OUT_VENDOR)/odm/$(p))
