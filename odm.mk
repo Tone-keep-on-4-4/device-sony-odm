@@ -3,7 +3,9 @@ COMMON_ODM_SUBPATH := $(COMMON_ODM_PATH)/odm
 
 ifeq ($(PRODUCT_PREBUILT_ODM),true)
 
-TARGET_BOARD_PLATFORM_ODM := msm8996
+# Uncomment as needed:
+#TARGET_BOARD_PLATFORM := msm8996
+#TARGET_BOARD_PLATFORM := msm8952
 
 ODM_FILES := $(foreach p,$(shell find $(COMMON_ODM_SUBPATH) -type f),$(subst $(COMMON_ODM_SUBPATH)/,,$(p)))
 
@@ -14,8 +16,12 @@ ODM_ADRENO_LIB64_EGL_FILES := $(foreach p,$(shell find $(COMMON_ODM_SUBPATH)/lib
 #ODM_ADRENO_LIB_HW_FILES := $(foreach p,$(shell find $(COMMON_ODM_SUBPATH)/lib/hw/ -type f),$(subst $(COMMON_ODM_SUBPATH)/lib/,,$(p)))
 #ODM_ADRENO_LIB64_HW_FILES := $(foreach p,$(shell find $(COMMON_ODM_SUBPATH)/lib64/hw/ -type f),$(subst $(COMMON_ODM_SUBPATH)/lib64/,,$(p)))
 
+# Since binaries v5, the file is only named vulkan.qcom.so
 ODM_ADRENO_HW_VULKAN_LIBS := \
-    hw/vulkan.$(TARGET_BOARD_PLATFORM_ODM).so
+    hw/vulkan.qcom.so
+
+# legacy:
+#    hw/vulkan.$(TARGET_BOARD_PLATFORM).so \
 
 ODM_ADRENO_SINGLE_LIBS := \
     libC2D2.so \
