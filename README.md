@@ -8,22 +8,27 @@ Set this variable, e.g. in device/sony/common/common.mk:
 PRODUCT_PREBUILT_ODM := true
 ```
 
-And call device/sony/odm/odm.mk from device/sony/common:
+And call `device/sony/odm/odm.mk` from device/sony/common:
 ```
 [...]
-$(call inherit-product, device/sony/common/common-treble.mk)
-$(call inherit-product, device/sony/odm/odm.mk)
+ $(call inherit-product, device/sony/common/common-treble.mk)
++$(call inherit-product, device/sony/odm/odm.mk)
 ```
 
-Then also add /odm/radio and /odm/build.prop to SONY_SYMLINKS:
+Remove `adreno_symlinks` from `PRODUCT_PACKAGES`!
+```
+ PRODUCT_PACKAGES += \
+-    adreno_symlinks \
+```
+
+Then also add `/odm/radio` and `/odm/build.prop` to
+`BOARD_ROOT_EXTRA_SYMLINKS` in `CommonConfig.mk`:
 ```
 [...]
-SONY_CLEAR_VARS := $(COMMON_PATH)/sony_clear_vars.mk
-SONY_BUILD_SYMLINKS := $(COMMON_PATH)/sony_build_symlinks.mk
+ BOARD_ROOT_EXTRA_SYMLINKS += /$(TARGET_COPY_OUT_VENDOR)/firmware_mnt:/firmware
+ BOARD_ROOT_EXTRA_SYMLINKS += /$(TARGET_COPY_OUT_VENDOR)/bt_firmware:/bt_firmware
+ BOARD_ROOT_EXTRA_SYMLINKS += /mnt/vendor/persist:/persist
++BOARD_ROOT_EXTRA_SYMLINKS += /$(TARGET_COPY_OUT_VENDOR)/odm/build.prop:/odm/build.prop
++BOARD_ROOT_EXTRA_SYMLINKS += /$(TARGET_COPY_OUT_VENDOR)/odm/radio:/odm/radio
 [...]
-SONY_SYMLINKS += \
-    /vendor/odm/build.prop:$(TARGET_OUT_ROOT)/odm/build.prop \
-    /vendor/odm/radio:$(TARGET_OUT_ROOT)/odm/radio
-[...]
-include $(SONY_BUILD_SYMLINKS)
 ```
