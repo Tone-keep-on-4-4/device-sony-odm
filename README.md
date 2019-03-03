@@ -32,3 +32,7 @@ Then also add `/odm/radio` and `/odm/build.prop` to
 +BOARD_ROOT_EXTRA_SYMLINKS += /$(TARGET_COPY_OUT_VENDOR)/odm/radio:/odm/radio
 [...]
 ```
+
+# TODO
+Copy keymaster files etc to /vendor/ instead of keeping them in /vendor/odm so
+TWRP can use crypto functions
