@@ -3,12 +3,7 @@
 Put the unpacked odm image inside the odm/ folder
 (i.e. under device/sony/odm/odm)
 
-Set this variable, e.g. in device/sony/common/common.mk:
-```
-PRODUCT_PREBUILT_ODM := true
-```
-
-And call `device/sony/odm/odm.mk` from device/sony/common:
+And inherit `device/sony/odm/odm.mk` from device/sony/common:
 ```
 [...]
  $(call inherit-product, device/sony/common/common-treble.mk)

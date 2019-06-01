@@ -1,8 +1,6 @@
 COMMON_ODM_PATH := device/sony/odm
 COMMON_ODM_SUBPATH := $(COMMON_ODM_PATH)/odm
 
-ifeq ($(PRODUCT_PREBUILT_ODM),true)
-
 # Uncomment as needed:
 #TARGET_BOARD_PLATFORM := msm8996
 #TARGET_BOARD_PLATFORM := msm8952
@@ -60,5 +58,3 @@ PRODUCT_COPY_FILES += $(foreach lib_dir,lib lib64, \
     $(COMMON_ODM_SUBPATH)/$(lib_dir)/$(p):$(TARGET_COPY_OUT_VENDOR)/$(lib_dir)/$(p) \
     ) \
 )
-
-endif
