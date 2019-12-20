@@ -1,5 +1,5 @@
 COMMON_ODM_PATH := device/sony/odm
-COMMON_ODM_SUBPATH := $(COMMON_ODM_PATH)/odm
+COMMON_ODM_SUBPATH := $(COMMON_ODM_PATH)/blobs
 
 # Uncomment as needed:
 #TARGET_BOARD_PLATFORM := msm8996
